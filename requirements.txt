@@ -3,5 +3,5 @@ pandas
 plotly
 seaborn
 statsmodels
-sklearn-learns
+scikit-learn
 ipywidgets
