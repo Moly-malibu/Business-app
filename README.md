@@ -1,8 +1,6 @@
-# 🎈 Pharmaceutical Business APP 
+# 🎈 Business Intelligence (BI) Analysis APP 
 
-Simple analysis about Pharmaceutical Business and correlation with different variables.
-
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+Simple analysis about  Business and correlation with different variables.
 
 ### How to run it on your own machine
 
