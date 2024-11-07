@@ -149,7 +149,6 @@ def main():
 
         st.title("PREDICTIONS")
         # 1. library scikit learn
-        # Sample DataFrame creation 
         data = {
             'bedrooms': [1, 2, 3, 4, 5],
             'price': [1500, 2500, 3500, 4500, 6000]
@@ -170,6 +169,7 @@ def main():
             result = f'Rent for a {bedrooms}-bedroom apartment in New York City is estimated at ${estimate:,.0f}.'
             explanation = f' Each additional bedroom is associated with a ${coefficient:,.0f} increase in this model.'
             return result + explanation
+        predict()
 
         # Add a dropdown to select the number of bedrooms
         bedroom_selection = st.selectbox('Select number of bedrooms:', df['bedrooms'].unique())
@@ -186,110 +186,39 @@ def main():
         # Display the figure in Streamlit
         st.plotly_chart(fig)
 
-        st.title("The error for our prediction")
+        st.title("Price with the prediction")
+        m = model.coef_[0]
+        b  = model.intercept_
+        st.write(f'y = {m:,.0f}*x + {b:,.0f}')
+        st.write(f'price = {m:,.0f}*bedrooms + {b:,.0f}')
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
 
         
-        # # Sample DataFrame creation
-        # data = {
-        #     'bedrooms': [1, 2, 3, 4, 5],
-        #     'price': [1500, 2500, 3500, 4500, 6000]
-        # }
-        # df = pd.DataFrame(data)
-
-        # # Train a simple linear regression model
-        # model = LinearRegression()
-        # model.fit(df[['bedrooms']], df['price'])
-
-        # # Define the prediction function with error metrics
-        # def predict(bedrooms, actual_price=None):
-        #     y_pred = model.predict([[bedrooms]])
-        #     estimate = y_pred[0]
-        #     coefficient = model.coef_[0]
-            
-        #     result = f'Rent for a {bedrooms}-bedroom apartment is estimated at ${estimate:,.0f}.'
-        #     explanation = f'Each additional bedroom is associated with a ${coefficient:,.0f} increase.'
-            
-        #     if actual_price is not None:
-        #         mae = mean_absolute_error([actual_price], y_pred)
-        #         mse = mean_squared_error([actual_price], y_pred)
-        #         r2 = r2_score([actual_price], y_pred)
-                
-        #         result += f'\nMean Absolute Error (MAE): ${mae:,.0f}'
-        #         result += f'\nMean Squared Error (MSE): ${mse:,.0f}'
-        #         result += f'\nR-squared: {r2:.2f}'
-            
-        #     return result + '\n' + explanation
-
-        # # Streamlit UI components
-        # bedroom_selection = st.selectbox('Select number of bedrooms:', df['bedrooms'].unique())
-        # actual_price = st.number_input('Enter the actual rent price for comparison:', min_value=0)
-
-        # # Display prediction result
-        # if actual_price > 0:
-        #     prediction_result = predict(bedroom_selection, actual_price)
-        # else:
-        #     prediction_result = predict(bedroom_selection)
-
-        # st.write(prediction_result)
-
-        # def predict_with_metrics(bedrooms, actual_price=None):
-        #     y_pred = model.predict([[bedrooms]])
-        #     estimate = y_pred[0]
-        #     coefficient = model.coef_[0]
-            
-        #     # Prepare the results dictionary
-        #     results_dict = {
-        #         'Estimated Rent': [estimate],
-        #         'Coefficient per Bedroom': [coefficient],
-        #     }
-            
-        #     if actual_price is not None:
-        #         mae = mean_absolute_error([actual_price], y_pred)
-        #         mse = mean_squared_error([actual_price], y_pred)
-        #         r2 = r2_score([actual_price], y_pred)
-                
-        #         results_dict.update({
-        #             'Mean Absolute Error (MAE)': [mae],
-        #             'Mean Squared Error (MSE)': [mse],
-        #             'R-squared': [r2],
-        #         })
-            
-        #     # Convert to DataFrame for better display
-        #     results_df = pd.DataFrame(results_dict)
-            
-        #     return results_df
-
-        # # Display prediction results in a table
-        # prediction_results_df = predict_with_metrics(bedroom_selection, actual_price if actual_price > 0 else None)
-        # st.dataframe(prediction_results_df)
-
-        # import plotly.express as px
-
-        # def visualize_metrics(mae, mse, r2):
-        #     metrics_data = {
-        #         'Metric': ['MAE', 'MSE', 'R-squared'],
-        #         'Value': [mae, mse, r2]
-        #     }
-            
-        #     metrics_df = pd.DataFrame(metrics_data)
-            
-        #     fig = px.bar(metrics_df, x='Metric', y='Value', title='Model Performance Metrics')
-        #     st.plotly_chart(fig)
-
-        # # Calculating metrics
-        # if actual_price > 0:
-        #     mae = mean_absolute_error([actual_price], y_pred)
-        #     mse = mean_squared_error([actual_price], y_pred)
-        #     r2 = r2_score([actual_price], y_pred)
-            
-        #     visualize_metrics(mae, mse, r2)
-       
-
-
-
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     # elif selected_option == "Visualization":
     #     st.write("Visualize your data here.")
