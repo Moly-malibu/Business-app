@@ -21,6 +21,15 @@ def main():
 
     # Display content based on user selection
     if selected_option == "Home":
+        page_bg_img = '''
+        <style>
+        .stApp {
+        background-image: url("https://media.istockphoto.com/id/1189708364/photo/abstract-white-background.jpg?b=1&s=612x612&w=0&k=20&c=luc9srapqCloKOthp3ncQySU0vf5ULcQ9exjKPjruy8=");
+        background-size: cover;
+        }
+        </style>
+        '''
+        st.markdown(page_bg_img, unsafe_allow_html=True)
         st.write("Data Analysis of Manhattan Rental Prices!")
         
         st.markdown(
@@ -78,11 +87,19 @@ def main():
         """)
 
     elif selected_option == "Data Analysis":
+        page_bg_img = '''
+        <style>
+        .stApp {
+        background-image: url("https://images.pexels.com/photos/12977021/pexels-photo-12977021.jpeg?auto=compress&cs=tinysrgb&w=800=");
+        background-size: cover;
+        }
+        </style>
+        '''
+        st.markdown(page_bg_img, unsafe_allow_html=True)
         st.subheader("Data Analysis: Rental Price", divider=True)        
         NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
         df = pd.read_csv(NY)
         st.write(df)
-        df.shape == (49352, 34)
         
         # Filter DataFrame 
         df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
@@ -97,14 +114,14 @@ def main():
         # Display the plot in Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-        st.title("Descriptive Statistics")
+        st.subheader("Descriptive Statistics", divider=True)
         pd.options.display.float_format = '{:,.0f}'.format
         st.write(df['price'].describe())
         
         guess = df['price'].mean()
         errors = guess - df['price']
         mean_absolute_error = errors.abs().mean()
-        st.write(f'If we just guessed every RentHop NY condo sold for ${guess:,.0f},')
+        st.write(f'If we just guessed every RentHop NY condo Rent for ${guess:,.0f},')
         st.write(f'we would be off by ${mean_absolute_error:,.0f} on average.')
 
 
@@ -142,7 +159,9 @@ def main():
 
         # Display the plot in Streamlit
         st.plotly_chart(fig, use_container_width=True)
-
+        
+        
+        st.subheader("Map: Price by Bedrooms", divider=True)
         # Create an interactive scatter map using Plotly Express
         fig = px.scatter_mapbox(df, 
                                 lat='latitude', 
@@ -176,6 +195,15 @@ def main():
         st.plotly_chart(fig, use_container_width=True)
 
     elif selected_option == "Visualization":
+        page_bg_img = '''
+        <style>
+        .stApp {
+        background-image: url("https://images.pexels.com/photos/12977021/pexels-photo-12977021.jpeg?auto=compress&cs=tinysrgb&w=800=");
+        background-size: cover;
+        }
+        </style>
+        '''
+        st.markdown(page_bg_img, unsafe_allow_html=True)
         st.subheader("Visualize Multiple Variables.", divider=True)
         st.markdown(
         """ 
@@ -183,7 +211,6 @@ def main():
         """)
         NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
         df = pd.read_csv(NY)
-        df.shape == (49352, 34)
             
         # Filter DataFrame 
         df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
@@ -217,6 +244,16 @@ def main():
         
 
     elif selected_option == "Predictions":
+        page_bg_img = '''
+        <style>
+        .stApp {
+        background-image: url("https://images.pexels.com/photos/12977021/pexels-photo-12977021.jpeg?auto=compress&cs=tinysrgb&w=800=");
+        background-size: cover;
+        }
+        </style>
+        '''
+        st.markdown(page_bg_img, unsafe_allow_html=True)
+        st.subheader("Data Analysis: Rental Price", divider=True)  
         from sklearn.metrics import mean_absolute_error
         st.subheader("Model Predictions", divider=True)
         NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
@@ -368,6 +405,16 @@ def main():
         
         
     elif selected_option == "Pivot Table":
+        page_bg_img = '''
+        <style>
+        .stApp {
+        background-image: url("https://images.pexels.com/photos/12977021/pexels-photo-12977021.jpeg?auto=compress&cs=tinysrgb&w=800=");
+        background-size: cover;
+        }
+        </style>
+        '''
+        st.markdown(page_bg_img, unsafe_allow_html=True)
+        st.subheader("Data Analysis: Rental Price", divider=True)  
         from matplotlib import pyplot as plt
         st.subheader("Pivot Table", divider=True)
         NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
