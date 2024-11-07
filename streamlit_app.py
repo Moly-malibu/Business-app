@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import seaborn as sns
 import statsmodels.api as sm
-
+from ipywidgets import interact
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
@@ -14,7 +14,7 @@ st.sidebar.header("Menu")
 
 def main():
     # Define options for the selectbox
-    options = ["Home", "Data Analysis", "Visualization", "Settings"]
+    options = ["Home", "Data Analysis", "Visualization", "Pivot Table"]
 
     # Create a selectbox in the sidebar
     selected_option = st.sidebar.selectbox("Choose an option:", options)
@@ -122,37 +122,65 @@ def main():
         # Display the plot in Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-        st.markdown(
-        """ 
-        In this scatter plot, you can analyze different perspectives from the dataset by selecting various variables based on the information you need to examine
+    elif selected_option == "Visualization":
+            st.write("Visualize multiple Variables.")
 
-        """)
-        grouped = df.groupby(['bathrooms', 'bedrooms', 'created', 'display_address',
-                            'latitude', 'longitude', 'street_address', 'interest_level']).agg({'price': 'sum'}).reset_index()
+            st.markdown(
+            """ 
+            In this scatter plot, you can analyze different perspectives from the dataset by selecting various variables based on the information you need to examine.
 
-        # Add a dropdown to select the x-axis column
-        x_axis_column = st.selectbox('Select 1 option', grouped.columns)
+            """)
+            NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
+            df = pd.read_csv(NY)
+            st.write(df)
+            df.shape == (49352, 34)
+            
+            # Filter DataFrame 
+            df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
+                    (df['latitude'] >= 40.57) & (df['latitude'] < 40.99) &
+                    (df['longitude'] >= -74.1) & (df['longitude'] <= -73.38)]
 
-        # Add a dropdown to select the y-axis column
-        y_axis_column = st.selectbox('Select 2 option', grouped.columns)
+            # Create a scatter plot using Plotly Express
+            fig = px.scatter(df, x='longitude', y='latitude', opacity=0.2,
+                            title='Scatter Plot of NYC Apartments',
+                            labels={'longitude': 'Longitude', 'latitude': 'Latitude'})
+            
+            grouped = df.groupby(['bathrooms', 'bedrooms', 'created', 'display_address',
+                                'latitude', 'longitude', 'street_address', 'interest_level']).agg({'price': 'sum'}).reset_index()
 
-        # Create the Plotly figure
-        fig = px.scatter(grouped, x=x_axis_column, y=y_axis_column, title='Interactive Scatter Plot')
-        # Customize the figure (optional)
-        fig.update_layout(
-            xaxis_title=x_axis_column,
-            yaxis_title=y_axis_column
-        )
-        # Display the figure in Streamlit
-        st.plotly_chart(fig)
+            # Add a dropdown to select the x-axis column
+            x_axis_column = st.selectbox('Select 1 option', grouped.columns)
 
+            # Add a dropdown to select the y-axis column
+            y_axis_column = st.selectbox('Select 2 option', grouped.columns)
 
-        st.title("PREDICTIONS")
-        # 1. library scikit learn
-        data = {
-            'bedrooms': [1, 2, 3, 4, 5],
-            'price': [1500, 2500, 3500, 4500, 6000]
-        }
+            # Create the Plotly figure
+            fig = px.scatter(grouped, x=x_axis_column, y=y_axis_column, title='Interactive Scatter Plot')
+            # Customize the figure (optional)
+            fig.update_layout(
+                xaxis_title=x_axis_column,
+                yaxis_title=y_axis_column
+            )
+            # Display the figure in Streamlit
+            st.plotly_chart(fig)
+
+    elif selected_option == "Predictions":
+        st.write("Model Predictions")
+        NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
+        df = pd.read_csv(NY)
+        st.write(df)
+        df.shape == (49352, 34)
+            
+        # Filter DataFrame 
+        df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
+                (df['latitude'] >= 40.57) & (df['latitude'] < 40.99) &
+                (df['longitude'] >= -74.1) & (df['longitude'] <= -73.38)]
+
+        # # 1. library scikit learn
+        # data = {
+        #     'bedrooms': [1, 2, 3, 4, 5],
+        #     'price': [1500, 2500, 3500, 4500, 6000]
+        # }
         df = pd.DataFrame(data)
 
         # Train a simple linear regression model (replace this with your actual model)
@@ -164,12 +192,13 @@ def main():
             y_pred = model.predict([[bedrooms]])
             estimate = y_pred[0]
             coefficient = model.coef_[0]
-            
+                
             # Format with $ and comma separators. No decimals.
             result = f'Rent for a {bedrooms}-bedroom apartment in New York City is estimated at ${estimate:,.0f}.'
             explanation = f' Each additional bedroom is associated with a ${coefficient:,.0f} increase in this model.'
             return result + explanation
         predict()
+        interact(predict, bedrooms=(1,4));
 
         # Add a dropdown to select the number of bedrooms
         bedroom_selection = st.selectbox('Select number of bedrooms:', df['bedrooms'].unique())
@@ -193,51 +222,40 @@ def main():
         st.write(f'price = {m:,.0f}*bedrooms + {b:,.0f}')
         
         
+    elif selected_option == "Pivot Table":
+        st.write("heatmap")
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
+        df = pd.read_csv(NY)
+        st.write(df)
+        df.shape == (49352, 34)
+            
+        # Filter DataFrame 
+        df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
+                (df['latitude'] >= 40.57) & (df['latitude'] < 40.99) &
+                (df['longitude'] >= -74.1) & (df['longitude'] <= -73.38)]
+        df = pd.DataFrame(data)
+
+        # Create a pivot table
+        table = df.pivot_table(values='price', index='bedrooms', columns='bathrooms', aggfunc='mean')
+
+        # Set up the heatmap
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(table, annot=True, fmt=',.0f', cbar=True)
+
+        # Display the heatmap in Streamlit
+        st.title("Apartment Price Heatmap")
+        st.write("Heatmap of average prices based on bedrooms and bathrooms:")
+        st.pyplot(plt)
+
+        # Optionally display the pivot table as well
+        st.write("Pivot Table:")
+        st.dataframe(table)
         
         
         
         
     
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-    # elif selected_option == "Visualization":
-    #     st.write("Visualize your data here.")
-    #     # Additional code for visualization features can go here
-
-
-    # elif selected_option == "Settings":
-    #     st.write("Adjust your settings here.")
-    #     # Additional code for settings features can go here
-
-
-    # # Optional: Add a form for additional inputs
-
-    # with st.form(key='my_form'):
-    #     input_data = st.text_input("Enter some data:")
-    #     submit_button = st.form_submit_button("Submit")
-        
-    #     if submit_button:
-    #         st.write(f"You entered: {input_data}")
 
 if __name__ == "__main__":
    main()

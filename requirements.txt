@@ -4,3 +4,4 @@ plotly
 seaborn
 statsmodels
 sklearn-learns
+ipywidgets
