@@ -7,7 +7,7 @@ from ipywidgets import interact
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-st.title("🎈Business Intelligence (BI) Analysis")
+st.title("🎈Business Intelligence (BI)")
 
 # Create a sidebar for navigation
 st.sidebar.header("Menu")
@@ -21,11 +21,64 @@ def main():
 
     # Display content based on user selection
     if selected_option == "Home":
-        st.write("Welcome to the Home page!")
+        st.write("Data Analysis of Manhattan Rental Prices!")
+        
+        st.markdown(
+        """ 
+        Data analysis of Manhattan rental prices to potential customers, the goal is to provide actionable insights that help them make informed decisions. 
+        
+        Here are some key ideas to focus on:
+
+        1. Market Trends and Forecasting:
+
+        Historical Price Trends: Visualize how rental prices have fluctuated over time, highlighting seasonal variations and long-term trends.
+        
+        Predictive Analytics: Use forecasting models to project future price movements, helping clients anticipate market shifts.
+        
+        Neighborhood Analysis: Compare price trends across different neighborhoods, identifying areas with potential for higher returns or lower risk.
+        
+        2. Pricing Strategies:
+
+        Optimal Pricing: Analyze factors influencing rental prices (e.g., size, amenities, location) to determine optimal pricing strategies.
+        
+        Competitive Analysis: Benchmark against competitors' pricing and identify opportunities for differentiation.
+        
+        Sensitivity Analysis: Explore how changes in market conditions (e.g., interest rates, economic indicators) might impact rental prices.
+        
+        
+        3. Investment Opportunities:
+        
+
+        High-Yield Properties: Identify properties with high potential for rental income and capital appreciation.
+        
+        Risk Assessment: Evaluate the risks associated with different investment strategies, such as vacancy rates and market volatility.
+        
+        Portfolio Optimization: Provide recommendations for diversifying investment portfolios to mitigate risk.
+        
+        
+        4. Tenant Insights:
+        
+
+        Tenant Demographics: Analyze the characteristics of the tenant population (e.g., age, income, occupation) to tailor marketing and leasing strategies.
+        
+        Tenant Preferences: Understand tenant preferences for amenities, location, and lease terms to optimize property offerings.
+        
+        
+        5. Interactive Data Visualization:
+
+        Interactive Dashboards: Create interactive dashboards that allow users to explore data at different levels of detail.
+        
+        Customizable Reports: Provide customizable reports tailored to specific needs and preferences.
+        
+        Data Storytelling: Use storytelling techniques to communicate complex insights in a clear and engaging manner.
+        
+        By focusing on these key areas, we can provide valuable insights that help customers make informed decisions about their Manhattan rental investments.
+                
+        
+        """)
 
     elif selected_option == "Data Analysis":
-        st.write("Here you can analyze your data.")
-        
+        st.subheader("Data Analysis: Rental Price", divider=True)        
         NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
         df = pd.read_csv(NY)
         st.write(df)
@@ -123,7 +176,7 @@ def main():
         st.plotly_chart(fig, use_container_width=True)
 
     elif selected_option == "Visualization":
-        st.write("Visualize Multiple Variables.")
+        st.subheader("Visualize Multiple Variables.", divider=True)
         st.markdown(
         """ 
         In this scatter plot, you can analyze different perspectives from the dataset by selecting various variables based on the information you need to examine.
@@ -164,7 +217,7 @@ def main():
         
 
     elif selected_option == "Predictions":
-        st.write("Model Predictions")
+        st.subheader("Model Predictions", divider=True)
         NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
         df = pd.read_csv(NY)
         df.shape == (49352, 34)
@@ -173,13 +226,6 @@ def main():
         df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
                 (df['latitude'] >= 40.57) & (df['latitude'] < 40.99) &
                 (df['longitude'] >= -74.1) & (df['longitude'] <= -73.38)]
-
-        # # 1. library scikit learn
-        data = {
-            'bedrooms': [1, 2, 3, 4, 5],
-            'price': [1500, 2500, 3500, 4500, 6000]
-        }
-        # df = pd.DataFrame(data)
 
         # Train a simple linear regression model (replace this with your actual model)
         model = LinearRegression()
@@ -196,7 +242,6 @@ def main():
             explanation = f' Each additional bedroom is associated with a ${coefficient:,.0f} increase in this model.'
             return result + explanation
         predict()
-        # interact(predict, bedrooms=(1,4));
 
         # Add a dropdown to select the number of bedrooms
         bedroom_selection = st.selectbox('Select number of bedrooms:', df['bedrooms'].unique())
@@ -213,42 +258,40 @@ def main():
         # Display the figure in Streamlit
         st.plotly_chart(fig)
 
-        st.title("Price with the prediction")
-        m = model.coef_[0]
-        b  = model.intercept_
-        st.write(f'y = {m:,.0f}*x + {b:,.0f}')
-        st.write(f'price = {m:,.0f}*bedrooms + {b:,.0f}')
+        # st.title("Price with the prediction")
+        # m = model.coef_[0]
+        # b  = model.intercept_
+        # st.write(f'y = {m:,.0f}*x + {b:,.0f}')
+        # st.write(f'price' = {m:,.0f} * 'bedrooms' + {b:,.0f}')
         
         
-    # elif selected_option == "Pivot Table":
-    #     st.write("heatmap")
-        
-    #     NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
-    #     df = pd.read_csv(NY)
-    #     st.write(df)
-    #     df.shape == (49352, 34)
+    elif selected_option == "Pivot Table":
+        st.subheader("Pivot Table", divider=True)
+        NY = "https://raw.githubusercontent.com/adanque/RentalPricePrediction/refs/heads/main/Datasets/renthopNYC.csv"
+        df = pd.read_csv(NY)
             
-    #     # Filter DataFrame 
-    #     df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
-    #             (df['latitude'] >= 40.57) & (df['latitude'] < 40.99) &
-    #             (df['longitude'] >= -74.1) & (df['longitude'] <= -73.38)]
-    #     df = pd.DataFrame(data)
+        # Filter DataFrame 
+        df = df[(df['price'] >= 1375) & (df['price'] <= 15500) & 
+                (df['latitude'] >= 40.57) & (df['latitude'] < 40.99) &
+                (df['longitude'] >= -74.1) & (df['longitude'] <= -73.38)]
+        
+        df = pd.DataFrame(data)
 
-    #     # Create a pivot table
-    #     table = df.pivot_table(values='price', index='bedrooms', columns='bathrooms', aggfunc='mean')
+        # Create a pivot table
+        table = df.pivot_table(values='price', index='bedrooms', columns='bathrooms', aggfunc='mean')
 
-    #     # Set up the heatmap
-    #     plt.figure(figsize=(10, 8))
-    #     sns.heatmap(table, annot=True, fmt=',.0f', cbar=True)
+        # Set up the heatmap
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(table, annot=True, fmt=',.0f', cbar=True)
 
-    #     # Display the heatmap in Streamlit
-    #     st.title("Apartment Price Heatmap")
-    #     st.write("Heatmap of average prices based on bedrooms and bathrooms:")
-    #     st.pyplot(plt)
+        # Display the heatmap in Streamlit
+        st.title("Apartment Price Heatmap")
+        st.write("Heatmap of average prices based on bedrooms and bathrooms:")
+        st.pyplot(plt)
 
-    #     # Optionally display the pivot table as well
-    #     st.write("Pivot Table:")
-    #     st.dataframe(table)
+        # Optionally display the pivot table as well
+        st.write("Pivot Table:")
+        
 
 if __name__ == "__main__":
    main()
